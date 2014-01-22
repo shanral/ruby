@@ -2,18 +2,15 @@
 
 file = open("journal.txt")
 
-sleep_start = ""
-sleep_end   = ""
+time_awake = []
+time_sleep = []
 file.each_line do |line|
-  if line =~ /\A\d{6} \(\w{3}\):\n\z/
-    sleep_start = ""
-    sleep_end   = ""
-  elsif line =~ /\AAwake at (\d{4})\n\z/
-    sleep_start = $1
+  if line =~ /\AAwake at (\d{4})\n\z/
+    time_awake << $1
   elsif line =~ /\AAsleep at (\d{4})\n\z/
-    sleep_end = $1
-    puts "Awake at #{sleep_start}, asleep at #{sleep_end}"
-    puts "#{sleep_end.to_i - sleep_start.to_i}"
+    time_sleep << $1
   end
 end
 
+p time_awake
+p time_sleep
