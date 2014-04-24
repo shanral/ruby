@@ -1,7 +1,18 @@
 require 'time'
 
+def zero_padded(string)
+  string.length < 4 ? '0' + string : string
+end
 
-file = open('journal.txt')
+def minutes_to_fraction(string)
+  string = zero_padded(string)
+  hour   = string[0..1].to_i.to_s # remove zero pad
+  minute = string[2..3]
+  fraction = (minute.to_f / 60 * 100).to_s.split('.')[0]
+  hour + '.' + fraction
+end
+
+file = open('2014.txt')
 
 date        = []
 time_awake  = []
@@ -20,10 +31,10 @@ end
 
 output_dates = []
 output_sleep = []
-0.upto(date.length - 1) do |index|
-  curr_date   = date[index]
-  curr_asleep = time_asleep[index]
-  curr_awake  = time_awake[index + 1]
+0.upto(date.length - 2) do |index|
+  curr_date   = date[index + 1]
+  curr_asleep = time_asleep[index + 1]
+  curr_awake  = time_awake[index]
 
   next if curr_awake.nil? # won't work for first entry in journal
 
@@ -33,16 +44,16 @@ output_sleep = []
     time_slept = first_bit + second_bit
     time_slept = time_slept + 40 if time_slept.to_s[-2].to_i >= 6
     output_dates << curr_date
-    output_sleep << time_slept.to_s
+    output_sleep << minutes_to_fraction(time_slept.to_s)
   else
     time_slept = curr_awake.to_i - curr_asleep.to_i
     time_slept = time_slept + 40 if time_slept.to_s[-2].to_i >= 6
     output_dates << curr_date
-    output_sleep << time_slept.to_s
+    output_sleep << minutes_to_fraction(time_slept.to_s)
   end
 end
 
-out_file = File.new('output.csv', 'w')
+out_file = File.new('output_2014.csv', 'w')
 out_file.write "date,amount_slept\n"
 
 0.upto(output_dates.length - 1) do |index|
