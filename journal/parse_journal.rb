@@ -56,11 +56,13 @@ end
 out_file = File.new('output_2014.csv', 'w')
 out_file.write "date,amount_slept\n"
 
+# iterate through output_date to write output
 0.upto(output_dates.length - 1) do |index|
   out_date = output_dates[index]
-  out_date = out_date[0,4] + "/" + out_date[4, 2] + "/" + out_date[6,2]
+  out_date = out_date[0, 4] + "/" + out_date[4, 2] + "/" + out_date[6, 2]
   out_file.write "#{out_date},#{output_sleep[index]}\n"
 end
 
 file.close
 out_file.close
+
