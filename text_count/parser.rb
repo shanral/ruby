@@ -1,13 +1,16 @@
 require 'minitest/autorun'
 
 class WordCount
-
   def initialize(file)
-    @file = file
+    @file = file.gsub(/['"]/, '')
+  end
+
+  def text_array
+    @file.scan(/\w+/)
   end
 
   def raw_word_count
-    @file.scan(/\w+/).group_by { |word| word.downcase }.map { |k, v| [k, v.size] }
+    text_array.group_by { |word| word.downcase }.map { |k, v| [k, v.size] }
   end
 
   def sorted_word_count
@@ -17,16 +20,23 @@ end
 
 
 describe WordCount do
-  let(:ex1) { WordCount.new('aaa aa a a a') }
-
-  it "should create an accurate unsorted array" do
-    ex1.raw_word_count.must_equal [['aaa', 1], ['aa', 1], ['a', 3]]
+  it 'should create an accurate array of the given text' do
+    example = WordCount.new('aaa aa a a a')
+    example.text_array.must_equal ['aaa', 'aa', 'a', 'a', 'a']
   end
 
-  it "should create an accurate sorted array" do
-    ex1.sorted_word_count.must_equal [['a', 3], ['aa', 1], ['aaa', 1]]
+  it 'should create an accurate unsorted word count array' do
+    example = WordCount.new('aaa aa a a a')
+    example.raw_word_count.must_equal [['aaa', 1], ['aa', 1], ['a', 3]]
   end
 
-  let(:ex2) { WordCount.new("can't won't wont cant") }
-  # how to handle these...
+  it 'should create an accurate sorted array' do
+    example = WordCount.new('aaa aa a a a')
+    example.sorted_word_count.must_equal [['a', 3], ['aa', 1], ['aaa', 1]]
+  end
+
+  it 'should create and accurate unsorted array' do
+    example = WordCount.new(%-won't can"t wont cant-)
+    example.raw_word_count.must_equal [['wont', 2], ['cant', 2]]
+  end
 end
