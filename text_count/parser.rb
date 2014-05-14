@@ -18,6 +18,7 @@ class WordCount
   end
 end
 
+#puts WordCount.new(ARGV[0]).sorted_word_count
 
 describe WordCount do
   it 'should create an accurate array of the given text' do
