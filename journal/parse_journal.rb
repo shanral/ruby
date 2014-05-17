@@ -12,7 +12,7 @@ def minutes_to_fraction(string)
   hour + '.' + fraction
 end
 
-file = open('2014.txt')
+file = open(ARGV.first)
 
 date        = []
 time_awake  = []
@@ -53,7 +53,7 @@ output_sleep = []
   end
 end
 
-out_file = File.new('output_2014.csv', 'w')
+out_file = File.new('output.csv', 'w')
 out_file.write "date,amount_slept\n"
 
 # iterate through output_date to write output
