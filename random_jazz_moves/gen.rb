@@ -1,8 +1,5 @@
 NUMBER_OF_MOVES = ARGV[0].to_i
-moves = `shuf moves.txt -n #{NUMBER_OF_MOVES}`.split("\n")
+URL = "/home/ubuntu/programming/ruby/random_jazz_moves/moves.txt"
 
-pos = 1
-moves.each do |move|
-  puts "#{pos}. #{move}"
-  pos += 1
-end
+moves = `shuf #{URL} -n #{NUMBER_OF_MOVES}`
+moves.split("\n").each { |move| puts ">> #{move}" }
